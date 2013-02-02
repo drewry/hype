@@ -8,7 +8,7 @@ class Hype {
 	}
 
 	public function get_user($user_id) {
-		$row = $this->db->query_first("SELECT * FROM users WHERE id = '$user_id'");
+		$row = $this->db->query_first("SELECT id, email, firstname, lastname, avatar, created FROM users WHERE id = '$user_id'");
 
 		// if avatar is empty check gravatar and update
 		if($row['avatar'] == '') {
@@ -21,8 +21,10 @@ class Hype {
 	}
 
 	// this is the real sign up process which sends an email and saves a password
-	public function signup($user_id, $email) {
-		$pass = $this->random_password();
+	public function signup($user_id, $email, $pass = '') {
+		if($pass == '') {
+			$pass = $this->random_password();
+		}
 		
 		// updates
 		$this->db->update('users', array('email' => $email), "id = '$user_id'");

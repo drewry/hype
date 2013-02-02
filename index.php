@@ -20,10 +20,13 @@ switch($_GET['p']) {
 
 			$user = $h->get_user($user_id);
 
-			echo json_encode($user);
-			exit;
+			$output = json_encode($user);
+		} else {
+			$output = 'Checkin Function';
 		}
 		
+		echo $output;
+		exit;
 		break;
 
 	case 'signup' :
@@ -33,15 +36,18 @@ switch($_GET['p']) {
 
 			// add a new user row, sign them up and check them in
 			$user_id = $h->create_user($_POST);
-			$h->signup($user_id, $email);
+			$h->signup($user_id, $email, $pass);
 			$h->db->query("SELECT check_In($user_id, 1)");
 
 			$user = $h->get_user($user_id);
 
-			echo json_encode($user);
-			exit;
+			$output = json_encode($user);
+		} else {
+			$output = 'Signup Function';
 		}
 
+		echo $output;
+		exit;
 		break;
 
 	default :
