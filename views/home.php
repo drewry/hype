@@ -9,9 +9,20 @@
 		<h2>Or Use Foursquare</h2>
 	</div>
 </div>
+<div id="welcome"></div>
 <script type="text/javascript">
 function loadCheckins() {
 	$('#checkins').load('index.php?p=checkins');
+
+	$.get('index.php', { p: 'welcome' }, function(response) {
+		if(response == '0') {
+			$('#mask').hide();
+			$('#welcome').hide();
+		} else {
+			$('#welcome').html(response).show();
+			$('#mask').show();
+		}
+	});
 }
 setInterval(loadCheckins, (5*1000));
 </script>

@@ -62,12 +62,22 @@ switch($_GET['p']) {
 
 		break;
 
+	case 'welcome' :
+		$user = $h->get_most_recent();
+		if($user) {
+			echo "<img src='{$user['avatar']}'><h2>Welcome {$user['firstname']} {$user['lastname']} to Hypepotamus</h2>";
+		} else {
+			echo 0;
+		}
+		exit;
+		break;
+
 	case 'checkins' :
-			$users = $h->get_users();
-			include('views/checkins.php');
-			
-			exit;
-			break;
+		$users = $h->get_users();
+		include('views/checkins.php');
+		
+		exit;
+		break;
 
 	case 'checkin' :
 		$title = 'Checkin to Hypepotamus';

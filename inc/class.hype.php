@@ -7,6 +7,12 @@ class Hype {
 		$this->db = Database::obtain();
 	}
 
+	public function get_most_recent() {
+		$recent = date("Y-m-d H:i:s", strtotime("-10 seconds"));
+		$user = $this->db->query_first("SELECT * FROM checkins LEFT JOIN users ON checkins.user_Id = users.id WHERE date >= '$recent' ORDER BY date DESC");
+		return $user;
+	}
+
 	public function get_users() {
 		$onehour = date("Y-m-d H:i:s", strtotime("-1 hour"));
 		$users = $this->db->fetch_array("SELECT * FROM checkins LEFT JOIN users ON checkins.user_Id = users.id WHERE date >= '$onehour' GROUP BY user_Id ORDER BY date DESC");
