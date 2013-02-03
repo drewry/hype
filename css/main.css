@@ -38,9 +38,6 @@ body {
   border: 2px solid #ccc;
   border-radius: 10px;
   padding: 10px;
-  float: left;
-  width: 28%;
-  margin: 0 10px 0 0;
 }
   .user img {
     float: left;
@@ -95,3 +92,16 @@ body {
   #welcome h2 {
     font-size: 18px;
   }
+
+button.twitter {
+  background: url(../img/twitter.png) top left no-repeat;
+  width: 158px;
+  height: 28px;
+  text-align: right;
+  font-size: 12px;
+  text-shadow: 1px 1px 1px #ffffff;
+  filter: dropshadow(color=#ffffff, offx=1, offy=1);
+}
+button.twitter:hover {
+  background-position: 0 -28px;
+}

@@ -1,5 +1,6 @@
 <div class="row-fluid">
-	<div class="span6">
+	<div class="span4">
+		<h2>Returning Users</h2>
 		<form id="checkin">
 	        <fieldset>
 	            <label>E-mail or Username</label>
@@ -10,7 +11,18 @@
 	        </fieldset>
 	    </form>
 	</div>
-	<div class="span6">
+	<div class="span4">
+		<h2>Check in With Twitter</h2>
+		<form method="post" action="index.php?p=twitter">
+			<label>Twitter Username</label>
+			<input type="text" name="screen_name" value="" placeholder="@username">
+			<label>E-mail</label>
+			<input type="text" name="email" value="" placeholder="john@myemail.com">
+			<button type="submit" class="btn twitter">Sign in with Twitter</button>
+		</form>
+	</div>
+	<div class="span4">
+		<h2>Sign Up</h2>
 		<form id="signup">
 	        <fieldset>
 	            <label>E-mail</label>

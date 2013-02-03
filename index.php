@@ -62,6 +62,49 @@ switch($_GET['p']) {
 
 		break;
 
+	case 'clear' :
+		session_start();
+		session_destroy();
+		header('Location: index.php?p=checkin');
+		break;
+
+	case 'twitter' :
+		$twitter = new TwitterOAuth(CONSUMER_KEY, CONSUMER_SECRET);
+		
+		$screen_name = str_replace('@','',$_POST['screen_name']);
+		$email = $_POST['email'];
+		$user = $twitter->get("users/show", array('screen_name' => $screen_name));
+		$name_parts = explode(" ", $user->name);
+		if(count($name_parts) == 2) {
+			$firstname = $name_parts[0];
+			$lastname = $name_parts[1];
+		} elseif(count($name_parts) == 3) {
+			$firstname = $name_parts[0].' '.$name_parts[1];
+			$lastname = $name_parts[2];
+		} else {
+			$firstname = $user->name;
+		}
+		
+		$insert_data = array(
+			'firstname' => $firstname,
+			'lastname' => $lastname,
+			'twitter' => $screen_name,
+			'user_Name' => $screen_name,
+			'avatar' => $user->profile_image_url
+		);
+
+		$user_id = $h->create_user($insert_data);
+		$h->signup($user_id, $email);
+		$h->db->query("SELECT check_In($user_id, 1)");
+
+		$user = $h->get_user($user_id);
+
+		include('views/header.php');
+		include('views/twitter.php');
+		include('views/footer.php');
+
+		break;
+
 	case 'welcome' :
 		$user = $h->get_most_recent();
 		if($user) {

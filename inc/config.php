@@ -3,7 +3,7 @@ ob_start();
 session_start();
 error_reporting(0);
 
-define('DB_SERVER', "");
+define('DB_SERVER', "localhost");
 define('DB_USER', "");
 define('DB_PASS', "");
 define('DB_DATABASE', "");
@@ -14,6 +14,12 @@ $db->connect();
 
 require_once('class.hype.php');
 $h = new Hype();
+
+define('CONSUMER_KEY', '');
+define('CONSUMER_SECRET', '');
+define('OAUTH_CALLBACK', '');
+
+require_once('class.twitter.php');
 
 if((!isset($_SESSION['uid'])) OR ($_SESSION['uid'] == 0)) {
 	define("LOGGEDIN", false);
