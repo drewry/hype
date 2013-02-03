@@ -1,0 +1,55 @@
+body {
+  padding: 5px;
+  padding-top: 10px;
+  padding-bottom: 40px;
+}
+#hype-logo {
+  background: url('../img/hype.png') no-repeat;
+  height: 138px;
+  padding-left: 160px;
+  overflow: hidden;
+  min-width: 400px;
+  height: 200px;
+}
+#hype-logo-text {
+  font-size: 12.8em;
+  padding-top: 60px;
+  margin-left: -27px;
+  font-weight: 900;
+  letter-spacing: -15px;
+  color: black !important;
+}
+#main-content-box {
+  -moz-border-radius: 35px;
+  border-radius: 35px;
+  margin-top: -65px;
+  padding-bottom: 20px;
+  padding-top: 40px;
+}
+
+.user { 
+  background: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  float: left;
+  width: 28%;
+  margin: 0 10px 0 0;
+}
+  .user > img {
+    float: left;
+    margin: 0 10px 0 0;
+    border: 1px solid #ccc;
+  }
+  .user > .name {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+  }
+  .user > .date {
+    display: block;
+    font-size: 12px;
+    font-style: italic;
+    color: #888;
+  }

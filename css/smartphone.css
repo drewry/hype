@@ -1,0 +1,8 @@
+/*
+  Kind of for smartphones :) - Probably could use improvement - Kelner
+*/
+@media screen and (min-device-width: 0px) and (max-device-width: 580px) {
+  #hype-logo-text {
+    width: 200px;
+  }
+}

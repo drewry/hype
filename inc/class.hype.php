@@ -7,6 +7,12 @@ class Hype {
 		$this->db = Database::obtain();
 	}
 
+	public function get_users() {
+		$onehour = date("Y-m-d H:i:s", strtotime("-1 hour"));
+		$users = $this->db->fetch_array("SELECT * FROM checkins LEFT JOIN users ON checkins.user_Id = users.id WHERE date >= '$onehour' GROUP BY user_Id ORDER BY date DESC");
+		return $users;
+	}
+
 	public function get_user($user_id) {
 		$row = $this->db->query_first("SELECT id, email, firstname, lastname, avatar, created FROM users WHERE id = '$user_id'");
 
@@ -28,7 +34,7 @@ class Hype {
 		
 		// updates
 		$this->db->update('users', array('email' => $email), "id = '$user_id'");
-		$this->db->query("SELECT save_Password($user_id, $pass, uuid())");
+		$this->db->query("SELECT save_Password($user_id, '$pass', uuid())");
 
 		// send email
 		$to = $email;
@@ -48,11 +54,20 @@ class Hype {
 		return $user;
 	}
 
+	public function nfc($user_id) {
+		$row = $this->db->query_first("SELECT id FROM users WHERE id = '$user_id'");
+		if($row) {
+			$checkin = $this->db->query("SELECT check_In( $user_id, 3)");
+		}
+
+		return $checkin;
+	}
+
 	public function foursquare($raw) {
 		$data = json_decode($raw);
 
 		// check if user exists
-		$row = $this->db->query_first("SELECT id FROM users WHERE id = '$foursquare'");
+		$row = $this->db->query_first("SELECT id FROM users WHERE foursquare = '{$data->user->id}'");
 		if($row) {
 			$user_id = $row['id'];
 			$checkin = $this->db->query("SELECT check_In( $user_id, 2)");
@@ -90,6 +105,32 @@ class Hype {
 			$url .= ' />';
 		}
 		return $url;
+	}
+
+	public function human_timediff( $from, $to = '' ) {
+		if ( empty($to) )
+			$to = time();
+		$diff = (int) abs($to - $from);
+		if ($diff <= 3600) {
+			$mins = round($diff / 60);
+			if ($mins <= 1) {
+				$mins = 1;
+			}
+			$since = sprintf('%s mins', $mins);
+		} else if (($diff <= 86400) && ($diff > 3600)) {
+			$hours = round($diff / 3600);
+			if ($hours <= 1) {
+				$hours = 1;
+			}
+			$since = sprintf('%s hours', $hours);
+		} elseif ($diff >= 86400) {
+			$days = round($diff / 86400);
+			if ($days <= 1) {
+				$days = 1;
+			}
+			$since = sprintf('%s days', $days);
+		}
+		return $since;
 	}
 
 } 

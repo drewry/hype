@@ -5,33 +5,31 @@ if(!isset($_GET['p'])) {
 	$_GET['p'] = 'home';
 }
 
-switch($_GET['p']) {
+if(isset($_POST['a'])) {
+	switch($_POST['a']) {
 
-	case 'foursquare' :
-		$h->foursquare($_POST['checkin']);
-		break;
-
-	case 'checkin' :
-		if(isset($_POST['checkin'])) {
-			unset($_POST['checkin']);
+		case 'checkin' :
+			unset($_POST['a']);
 			extract($_POST);
 
-			$h->db->query("SELECT check_In($user_id, 1)");
+			$row = $h->db->query_first("SELECT id FROM users WHERE email = '$email' OR user_Name = '$email'");
 
-			$user = $h->get_user($user_id);
+			if($row) {
+				$user_id = $row['id'];
 
-			$output = json_encode($user);
-		} else {
-			$output = 'Checkin Function';
-		}
-		
-		echo $output;
-		exit;
-		break;
+				$h->db->query("SELECT check_In($user_id, 1)");
+				$user = $h->get_user($user_id);
 
-	case 'signup' :
-		if(isset($_POST['signup'])) {
-			unset($_POST['signup']);
+				echo json_encode($user);
+			} else {
+				echo json_encode('fail');
+			}
+			
+			exit;
+			break;
+
+		case 'signup' :
+			unset($_POST['a']);
 			extract($_POST);
 
 			// add a new user row, sign them up and check them in
@@ -41,17 +39,49 @@ switch($_GET['p']) {
 
 			$user = $h->get_user($user_id);
 
-			$output = json_encode($user);
-		} else {
-			$output = 'Signup Function';
-		}
+			echo json_encode($user);
+			exit;
+			break;
 
-		echo $output;
-		exit;
+		default :
+			break;
+	}
+}
+
+switch($_GET['p']) {
+
+	case 'foursquare' :
+		$h->foursquare($_POST['checkin']);
+		break;
+
+	case 'nfc' :
+		$user_id = $_GET['nfc'];
+		$h->nfc($user_id);
+
+		echo 'You are now checked into the hype';
+
+		break;
+
+	case 'checkins' :
+			$users = $h->get_users();
+			include('views/checkins.php');
+			
+			exit;
+			break;
+
+	case 'checkin' :
+		$title = 'Checkin to Hypepotamus';
+		include('views/header.php');
+		include('views/checkin.php');
+		include('views/footer.php');
+
 		break;
 
 	default :
-		echo 'Welcome to the Hype!';
+		$title = 'Welcome to Hypepotamus';
+		$users = $h->get_users();
+		include('views/header.php');
+		include('views/home.php');
+		include('views/footer.php');
 		break;
-
 }
